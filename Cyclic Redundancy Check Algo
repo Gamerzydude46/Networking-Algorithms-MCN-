@@ -1,121 +1,254 @@
 #include<bits/stdc++.h>
+#include<conio.h>
 using namespace std;
 
 int main()
 {
-    int data[20],g[10],m,k,d[20],cw[20];
-
-    //input from users
-    cout<<"\nEnter the size of bit string received :";
-    cin>>m;
-    cout<<"Enter the data of bit string  bitwise:";
-    for( int i=0; i<m; i++)
+    int data[20],g[10],m,k,d[20],cw[20],c;
+    
+    while(true)
     {
-        cin>>data[i];
-        d[i]=data[i];
-    }
+     cout<<"\n\nCYCLIC REDUNDANCY CHECK (CRC)\n";
+     cout<<"Press 1. Sender Side Algorithm\n      2. Receiver Aide Algorithm\n      3. Exit\n\nInput :";
+     getch();
+     cin>>c;
+     system("cls");
+     switch(c)
+     {  
+        cout<<"\n* CYCLIC REDUNDANCY CHECK (CRC):\n";
+         case 1:
+           {
+             cout<<"\n==>SENDER SIDE ALGORITHM";
+             //input from users
+             cout<<"\nEnter the size of data:";
+             cin>>m;
+             cout<<"Enter the data  bitwise:";
+             for( int i=0; i<m; i++)
+              {
+                cin>>data[i];
+                d[i]=data[i];
+              }
 
-    cout<<"\nEnter the size of g(x):";
-    cin>>k;
-    cout<<"Enter the data  bitwise:";
-    for( int i=0; i<k; i++)
-    {
-        cin>>g[i];
-    }
+             cout<<"\nEnter the size of g(x):";
+             cin>>k;
+             cout<<"Enter the data  bitwise:";
+             for( int i=0; i<k; i++)
+              {
+                cin>>g[i];
+              }
 
-    //appending data
-    int x=k-1;
-    for(int i=m; i<m+x;i++)
-    {
-        d[i]=0;
-    }
+             //appending data
+             int x=k-1;
+             for(int i=m; i<m+x;i++)
+              {
+                d[i]=0;
+              }
    
-    //display of input data
-    cout<<"\nCode word:";
-    for( int i=0; i<m; i++)
-    {   
-        cout<<" "<<data[i];
-    }
-
-    cout<<"\nG(x):";
-    for( int i=0; i<k; i++)
-    {
-        cout<<" "<<g[i];
-    }
-
-    //modulo-2 division 
-    int rem[20],opr[10];
-    int s=k,n;
-    for(int i=0; i<m; i ++)
-    {   
-        //selection of divisor 
-        if(d[i]==1)
-        {
-            for( n=0; n<k; n++)
-            {
-                opr[n]=g[n];
-            }
-        }
-        else
-        {
-          for(  n=0; n<k; n++)
-            {
-                opr[n]=0;
-            }
-        }
-        
-        //remainder logic
-        int a=0;
-        for(  int n=i,j=0; n<k+i; n++)
-            {
-              if(d[n]== opr[j])
-              {
-                  rem[a]=0;
-                  j++;
+             //display of input data
+             cout<<"\nActual Data:";
+             for( int i=0; i<m; i++)
+              {   
+                cout<<" "<<data[i];
               }
-              else
+             cout<<"\nAppended data:";
+             for( int i=0; i<m+x; i++)
               {
-                  rem[a]=1;
-                  j++;
+                cout<<" "<<d[i];
               }
-              a++;          
-            }
+             cout<<"\nG(x):";
+             for( int i=0; i<k; i++)
+              {
+                cout<<" "<<g[i];
+              }
+
+              //modulo-2 division 
+             int rem[20],opr[10];
+             int s=k,n;
+             for(int i=0; i<m; i ++)
+              {   
+                //selection of divisor 
+                if(d[i]==1)
+                {
+                 for( n=0; n<k; n++)
+                  {
+                    opr[n]=g[n];
+                  }
+                }
+                else
+                {
+                 for(  n=0; n<k; n++)
+                  {
+                    opr[n]=0;
+                  }
+                }
         
-        //upadting divident
-         for( int n=0; n<k-1; n++)
-            {
-                    rem[n]=rem[n+1];
-               d[n+i+1]=rem[n];
-            }           
-     }  
-    //error detection
-    int error;
-    for(int i=m;i<m+x;i++)
-     {
-         if(d[i]==0)
-         {
-             error=0;
-         }
-         else
-         {
-            error=1;
+               //remainder logic
+               int a=0;
+               for(  int n=i,j=0; n<k+i; n++)
+                {
+                 if(d[n]== opr[j])
+                 {
+                   rem[a]=0;
+                   j++;
+                 }
+                 else
+                 {
+                   rem[a]=1;
+                   j++;
+                 }
+                 a++;          
+                }
+        
+               //upadting divident
+               for( int n=0; n<k-1; n++)
+                {
+                  rem[n]=rem[n+1];
+                  d[n+i+1]=rem[n];
+                }           
+              }
+    
+             //display of actual output
+             cout<<"\nCRC:";
+             for( int i=m; i<m+x; i++)
+              {
+                 cout<<" "<<d[i];
+                 cw[i]=d[i];
+              }
+             cout<<"\nCode Word:";
+             for( int i=0; i<m; i++)
+              {
+                 cw[i]=data[i];
+              }
+             for( int i=0; i<m+x; i++)
+              {
+                 cout<<" "<<cw[i];
+              }
             break;
-         }
-     } 
-     //display of actual output
-     if(error==0)
-      { 
-        cout<<"\n\nData received correctly !";
-        cout<<"\nActual data:";
-        for( int i=0; i<m-x; i++)
-         {
-           cout<<" "<<data[i];
-         }
-      }
-     else
-      {
-        cout<<"\n\nError detected........\nData received is Incorrect !";
-        cout<<"\nAsk the sender to re-transmit the data.";
-      }
+           }    
+
+        case 2: 
+          {
+             cout<<"\n==>RECEIVER SIDE ALGORITHM\n";   
+             //input from users
+             cout<<"\nEnter the size of bit string received :";
+             cin>>m;
+             cout<<"Enter the data of bit string  bitwise:";
+             for( int i=0; i<m; i++)
+              {
+                cin>>data[i];
+                d[i]=data[i];
+              }
+
+             cout<<"\nEnter the size of g(x):";
+             cin>>k;
+             cout<<"Enter the data  bitwise:";
+             for( int i=0; i<k; i++)
+              {
+                cin>>g[i];
+              }
+
+             //appending data
+             int x=k-1;
+             for(int i=m; i<m+x;i++)
+              {
+                d[i]=0;
+              }
+   
+             //display of input data
+             cout<<"\nCode word:";
+             for( int i=0; i<m; i++)
+              {   
+                cout<<" "<<data[i];
+              }
+
+             cout<<"\nG(x):";
+             for( int i=0; i<k; i++)
+              {
+                cout<<" "<<g[i];
+              }
+
+             //modulo-2 division 
+             int rem[20],opr[10];
+             int s=k,n;
+             for(int i=0; i<m; i ++)
+              {   
+               //selection of divisor 
+               if(d[i]==1)
+                {
+                 for( n=0; n<k; n++)
+                  {
+                    opr[n]=g[n];
+                  }
+                }
+                else
+                {
+                 for(  n=0; n<k; n++)
+                  {
+                    opr[n]=0;
+                  }
+                }
+        
+                //remainder logic
+                int a=0;
+                for(  int n=i,j=0; n<k+i; n++)
+                 {
+                   if(d[n]== opr[j])
+                   {
+                     rem[a]=0;
+                     j++;
+                   }
+                   else
+                   {
+                     rem[a]=1;
+                     j++;
+                   }
+                  a++;          
+                 }    
+        
+                //upadting divident
+                for( int n=0; n<k-1; n++)
+                 {
+                     rem[n]=rem[n+1];
+                     d[n+i+1]=rem[n];
+                 }           
+              }  
+             //error detection
+             int error;
+             for(int i=m;i<m+x;i++)
+              {
+                if(d[i]==0)
+                 {
+                   error=0;
+                 }
+                else
+                {
+                  error=1;
+                   break;
+               }
+              } 
+             //display of actual output
+             if(error==0)
+             { 
+              cout<<"\n\nData received correctly !";
+              cout<<"\nActual data:";
+              for( int i=0; i<m-x; i++)
+               {
+                cout<<" "<<data[i];
+               }
+             }
+             else
+             {
+              cout<<"\n\nError detected........\nData received is Incorrect !";
+              cout<<"\nAsk the sender to re-transmit the data.";
+             }
+             break;
+          }               
+
+        case 3:
+           {
+               exit(0);
+           }      
+     }
+    }
 
 }
